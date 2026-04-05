@@ -6,11 +6,10 @@ import SubmitGrievance from './pages/SubmitGrievance';
 import TrackStatus from './pages/TrackStatus';
 import AdminDashboard from './pages/AdminDashboard';
 
-// The Home page component
 const Home = () => (
   <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
     <h1 className="text-4xl font-bold text-blue-900 mb-4 drop-shadow-sm">Chandigarh Public Grievance Portal</h1>
-    <p className="text-gray-800 font-medium mb-8 max-w-xl mx-auto bg-white/50 p-4 rounded-xl">
+    <p className="text-gray-800 font-medium mb-8 max-w-xl mx-auto bg-white/70 p-4 rounded-xl shadow-sm backdrop-blur-sm">
       A centralized platform for citizens to report civic issues and for administration to resolve them efficiently.
     </p>
     <div className="flex justify-center gap-4">
@@ -26,29 +25,26 @@ const Home = () => (
 
 export default function App() {
   return (
-    // 1. THE BACKGROUND MAP: Live URL to Le Corbusier's Map of Chandigarh
+    // 1. THE MAP: Updated to .jpg
     <div 
       className="min-h-screen flex flex-col relative"
       style={{
-        backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/e/ec/Le_Corbusier_Map.jpg')`,
+        backgroundImage: `url('/chandigarh_map.jpg')`, 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
       }}
     >
-      {/* Frosted white overlay so the map is visible but text remains highly readable */}
       <div className="absolute inset-0 bg-white/85 z-0 pointer-events-none"></div>
 
-      {/* Main Content Wrapper */}
       <div className="relative z-10 flex flex-col min-h-screen">
         
-        {/* Global Header */}
         <header className="bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
-              {/* 2. THE EMBLEM: Live URL to the official Chandigarh Flag/Emblem */}
+              {/* 2. THE EMBLEM: Updated to .jpg */}
               <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Flag_of_Chandigarh.svg" 
+                src="/chandigarh_emblem.jpg" 
                 alt="Chandigarh Emblem" 
                 className="h-10 w-auto drop-shadow-sm"
               />
@@ -62,7 +58,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* Main Content Area */}
         <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -72,7 +67,6 @@ export default function App() {
           </Routes>
         </main>
 
-        {/* Global Footer */}
         <footer className="bg-gray-900/95 text-white py-6 mt-auto border-t border-gray-800">
           <div className="max-w-7xl mx-auto px-4 text-center text-sm text-gray-400">
             © {new Date().getFullYear()} Chandigarh Administration. Designed for Smart India Hackathon.
