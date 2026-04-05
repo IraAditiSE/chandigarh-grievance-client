@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { grievanceApi } from '../services/grievanceApi'; // <-- ADD THIS IMPORT
 
 export default function AdminDashboard() {
   // State for the form
@@ -13,25 +13,20 @@ export default function AdminDashboard() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(''); // Clear old errors when trying again
+    setError('');
 
     try {
-      // 1. Send the request to the backend
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/wards/login`, {
-        wardNumber,
-        email,
-        password
-      });
-
-      // 2. If we get here, the backend sent a 200 OK Success!
+      // USE YOUR API SERVICE INSTEAD OF RAW AXIOS
+      await grievanceApi.adminLogin(wardNumber, email, password);
+      
       setIsLoggedIn(true);
       
     } catch (err) {
-      // 3. If the backend sends a 401 Error, React jumps straight here
+      // Your api service throws a generic error, or you can capture the specific one
       if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error); // Shows "Invalid Ward Number, Email, or Password"
+        setError(err.response.data.error);
       } else {
-        setError("Network error. Please try again.");
+        setError("Invalid Ward Number, Email, or Password.");
       }
     }
   };

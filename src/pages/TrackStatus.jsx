@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { grievanceApi } from '../services/grievanceApi'; // <-- ADD THIS IMPORT
 
 export default function TrackStatus() {
   const [email, setEmail] = useState('');
@@ -8,30 +8,25 @@ export default function TrackStatus() {
   const [error, setError] = useState('');
   const [grievances, setGrievances] = useState(null); // null means hasn't searched yet
 
+
   const handleTrack = async (e) => {
     e.preventDefault();
     setError('');
     setGrievances(null);
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/grievances/track`, {
-        email,
-        password
-      });
-
-      // Success! Set the list of grievances to display them
-      setGrievances(response.data);
+      // USE YOUR API SERVICE INSTEAD OF RAW AXIOS
+      const data = await grievanceApi.trackByCredentials(email, password);
+      setGrievances(data);
 
     } catch (err) {
-      // Failed! Show the error message
       if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error); // Shows "No grievances found..."
+        setError(err.response.data.error);
       } else {
-        setError("Network error. Ensure backend is running.");
+        setError("No grievances found or network error.");
       }
     }
   };
-
   return (
     <div className="max-w-xl mx-auto mt-10">
       <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 mb-8">
