@@ -12,24 +12,27 @@ export default function AdminDashboard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
 
-    try {
-      // USE YOUR API SERVICE INSTEAD OF RAW AXIOS
-      await grievanceApi.adminLogin(wardNumber, email, password);
-      
-      setIsLoggedIn(true);
-      
-    } catch (err) {
-      // Your api service throws a generic error, or you can capture the specific one
-      if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error);
-      } else {
-        setError("Invalid Ward Number, Email, or Password.");
-      }
-    }
-  };
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/wards/login`, {
+      wardNumber,
+      email,
+      password
+    });
+
+    // Access the grievances directly from the login response!
+    const grievancesForThisWard = response.data.grievances; 
+    console.log("Fetched Grievances:", grievancesForThisWard);
+    
+    setIsLoggedIn(true);
+    setGrievances(grievancesForThisWard); // Make sure you have a const [grievances, setGrievances] = useState([]);
+
+  } catch (err) {
+    setError(err.response?.data?.error || "Login Failed");
+  }
+};
 
   // If logged in, show the dashboard view. Otherwise, show the login form.
   if (isLoggedIn) {
