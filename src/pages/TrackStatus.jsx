@@ -3,7 +3,8 @@ import { grievanceApi } from '../services/grievanceApi';
 import { Search, Loader2, Clock, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 
 export default function TrackStatus() {
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [grievances, setGrievances] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
@@ -18,7 +19,7 @@ export default function TrackStatus() {
     setHasSearched(true);
 
     try {
-      const data = await grievanceApi.trackByPhone(phone);
+      const data = await grievanceApi.trackByCredentials(email, password);
       // Sort by newest first
       const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setGrievances(sortedData);
@@ -73,24 +74,21 @@ export default function TrackStatus() {
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Track Your Grievance</h2>
         <p className="text-gray-600 mb-6">Enter your registered phone number to check the real-time status of your complaints.</p>
         
-        <form onSubmit={handleSearch} className="max-w-md mx-auto flex gap-2">
-          <input 
-            type="tel" 
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="10-digit mobile number" 
-            className="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chd-blue outline-none"
-            required
-          />
-          <button 
-            type="submit" 
-            disabled={loading || !phone}
-            className="bg-chd-blue text-white px-6 py-3 rounded-lg hover:bg-blue-800 transition disabled:bg-blue-400 flex items-center justify-center gap-2"
-          >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
-            Search
-          </button>
-        </form>
+        <form onSubmit={handleSearch} className="max-w-xl mx-auto flex flex-col sm:flex-row gap-2">
+    <input 
+      type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+      placeholder="Registered Email" 
+      className="flex-grow p-3 border border-gray-300 rounded-lg outline-none" required
+    />
+    <input 
+      type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+      placeholder="Password" 
+      className="flex-grow p-3 border border-gray-300 rounded-lg outline-none" required
+    />
+    <button type="submit" disabled={loading} className="bg-chd-blue text-white px-6 py-3 rounded-lg hover:bg-blue-800 transition">
+      Search
+    </button>
+  </form>
       </div>
 
       {/* Error Message */}

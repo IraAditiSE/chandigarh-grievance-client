@@ -3,6 +3,9 @@ import { grievanceApi } from '../services/grievanceApi';
 import { LayoutDashboard, LogOut, Loader2, AlertCircle, Clock, CheckCircle2 } from 'lucide-react';
 
 export default function AdminDashboard() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const [wardInput, setWardInput] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentWard, setCurrentWard] = useState(null);
@@ -13,11 +16,16 @@ export default function AdminDashboard() {
   const [updatingId, setUpdatingId] = useState(null);
 
   // Handle "Login" by Ward Number
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (wardInput) {
+    setError(null);
+    try {
+      // Check credentials with the backend
+      await grievanceApi.adminLogin(wardInput, email, password);
       setCurrentWard(parseInt(wardInput));
       setIsLoggedIn(true);
+    } catch (err) {
+      setError("Invalid Ward Number, Email, or Password.");
     }
   };
 
@@ -86,6 +94,14 @@ export default function AdminDashboard() {
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chd-blue outline-none"
               placeholder="e.g., 2"
             />
+            <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">Official Email</label>
+    <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="wardX@chd.gov.in" />
+  </div>
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+    <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg" placeholder="••••••••" />
+  </div>
           </div>
           <button type="submit" className="w-full bg-chd-dark text-white py-3 rounded-lg hover:bg-gray-800 transition font-medium">
             Access Dashboard

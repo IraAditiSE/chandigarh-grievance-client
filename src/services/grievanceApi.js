@@ -13,13 +13,24 @@ export const grievanceApi = {
   },
 
   // Fetches a citizen's history using their phone number
-  trackByPhone: async (phone) => {
+  // Replaces trackByPhone
+  trackByCredentials: async (email, password) => {
     try {
-      const response = await apiClient.get(`/grievances/citizen/${phone}`);
+      const response = await apiClient.post('/grievances/track', { email, password });
       return response.data;
     } catch (error) {
-      console.error("Error fetching grievance history:", error);
+      console.error("Error tracking grievance:", error);
       throw error;
+    }
+  },
+
+  // New Admin Login Method
+  adminLogin: async (wardNumber, email, password) => {
+    try {
+      const response = await apiClient.post('/wards/login', { wardNumber, email, password });
+      return response.data; // Will return success if valid
+    } catch (error) {
+      throw new Error("Invalid credentials");
     }
   },
 

@@ -33,6 +33,7 @@ export default function SubmitGrievance() {
     citizenName: '',
     citizenPhone: '',
     citizenEmail: '',
+    citizenPassword: '',
     primaryCategory: '',
     subCategory: '',
     title: '',
@@ -143,6 +144,10 @@ export default function SubmitGrievance() {
               <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
               <input required type="email" name="citizenEmail" value={formData.citizenEmail} onChange={handleChange} className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chd-blue focus:border-chd-blue" placeholder="john@example.com" />
             </div>
+            <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">Create Tracking Password</label>
+    <input required type="password" name="citizenPassword" value={formData.citizenPassword} onChange={handleChange} className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chd-blue" placeholder="Create a password" />
+  </div>
           </div>
         </div>
 
